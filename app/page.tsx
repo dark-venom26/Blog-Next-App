@@ -11,7 +11,7 @@ interface Blog {
   content: string;
   slug: string;
   createdAt: number;
-  userId: string;
+  email: string
 }
 
 export default function Home() {

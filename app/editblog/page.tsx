@@ -15,7 +15,6 @@ const EditBlog = ({ blog }: Props) => {
   const [intro, setIntro] = useState(blog.intro)
   const [title, setTitle] = useState(blog.title)
   const [content, setContent] = useState(blog.content)
-  const [createdAt, setCreatedAt] = useState(blog.createdAt)
 
   const saveBlog = async() => {
     const data = {
@@ -24,7 +23,6 @@ const EditBlog = ({ blog }: Props) => {
       content,
       slug: slugify(title, {lower: true}),
       createdAt: moment().unix(),
-      userId: blog.userId
     }
 
     try {
@@ -62,7 +60,7 @@ const EditBlog = ({ blog }: Props) => {
             <textarea value={content} onChange={(e) => setContent(e.target.value)} className="rounded-md outline-none w-full h-32 p-5 shadow-md bg-zinc-100 resize-none" placeholder="Enter your content..." />
           </div>
           <div className="flex text-left text-sm">
-            Last Edited: <DateFormatter timestamp={createdAt} />
+            Last Edited: <DateFormatter timestamp={blog.createdAt} />
           </div>
           <div className="flex flex-col gap-y-3 w-full">
             <button onClick={()=> saveBlog()} className="hover:bg-green-300 hover:text-green-950 p-3 rounded-md outline-none cursor-pointer flex items-center justify-center text-white bg-green-950 transition-all duration-100 font-semibold">Create</button>

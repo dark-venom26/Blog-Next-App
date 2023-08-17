@@ -12,6 +12,7 @@ const Navbar = (props: Props) => {
     const [search, setSearch] = useState<string>("")
 
     const session = useSession();
+    
     useEffect(() => {
         if(session?.status === "authenticated"){
             setloggedIn(true)

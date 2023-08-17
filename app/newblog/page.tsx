@@ -5,6 +5,7 @@ import { db, collection, updateDoc, doc, addDoc } from "@/app/lib/db"
 import moment from "moment"
 import slugify from 'slugify';
 import { useRouter } from 'next/navigation'
+import { getSession } from 'next-auth/react';
 
 type Props = {}
 
@@ -15,15 +16,23 @@ const NewBlog = (props: Props) => {
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
 
+
   const saveBlog = async () => {
     
+  const session = await getSession();
+
+    if (!session) {
+      router.push(`/login`)
+    }
+  
+
     const newBlog = {
       intro,
       title,
       content,
       slug: slugify(title, { lower: true }),
       createdAt: moment().unix(),
-      userId:"248923948", //to be made yet
+      email: session?.user?.email,
     };
 
     try {

@@ -4,6 +4,7 @@ import { db, collection, getDocs, query, where } from "@/app/lib/db"
 import DateFormatter from "@/app/components/dateformatter";
 import Loader from "@/app/components/loader";
 import EditBlog from "@/app/editblog/page";
+import { useSession } from 'next-auth/react';
 
 type Props = {
   params: any;
@@ -14,6 +15,8 @@ const Page = ({ params }: Props) => {
 
   const [blog, setBlog] = useState<any>();
   const [editMode, setEditMode] = useState<boolean>(false);
+  const session = useSession()
+  const sessionEmail = session?.data?.user?.email;
 
   useEffect(() => {
     const fetchBlogBySlug = async () => {
@@ -49,10 +52,14 @@ const Page = ({ params }: Props) => {
             <div className="text-md font-normal mt-3">
               {blog.content}
             </div>
+            <div className="text-md font-semibold mt-6">{blog.email}</div>
             <div className="text-sm mt-5"><DateFormatter timestamp={blog.createdAt} /></div>
           </div> : <Loader/>
       }
-      <button onClick={()=>setEditMode(!editMode)} className="absolute bottom-0 right-0 rounded-md border-sky-950 hover:bg-sky-950 hover:text-white shadow border-2 w-24 p-1 mt-3 cursor-pointer">{editMode ? "Cancel" : "Edit"}</button>
+      {
+        blog?.email === sessionEmail && 
+        <button onClick={()=>setEditMode(!editMode)} className="absolute bottom-0 right-0 rounded-md border-sky-950 hover:bg-sky-950 hover:text-white shadow border-2 w-24 p-1 mt-3 cursor-pointer">{editMode ? "Cancel" : "Edit"}</button>
+      }
     </div>
   )
 }
